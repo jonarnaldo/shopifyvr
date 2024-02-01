@@ -1,15 +1,30 @@
 const shopifyUtils = {
   getAllProducts: async function() {
-    const response = await fetch("https://localhost:8080/products", {
-      method: "POST",
-      mode: "cors",
-      cache: "no-cache",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-    return response.json();
+    try {
+      const localhost = 'your local ip here';
+      const response = await fetch(`https://${localhost}:8080/products`, {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      return response.json();
+    } catch (error) {
+      // hack to fix certs error
+      const response = await fetch("https://localhost:8080/products", {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      return response.json();
+    }
   },
+
   getShopifyProductData: function (data) {
     console.log(data)
     if (data.products.edges.length) {
