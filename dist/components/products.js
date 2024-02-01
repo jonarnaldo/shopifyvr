@@ -24,13 +24,28 @@ const aframeUtils = {
   generateProducts: function(productData) {
     console.log('adding box...')
     
-    productData.forEach(product => {
+    let xPos = 0;
+    productData.forEach((product, index) => {
       const scene = document.querySelector('#shelf');
       const box = document.createElement("a-box");
+      const position = `${xPos - 1} 1 0.15`;
       box.setAttribute('id', 'test');
-      box.setAttribute('position', '1 0 0');
+      box.setAttribute('height', 0.5);
+      box.setAttribute('width', 0.3);
+      box.setAttribute('depth', 0.05);
+      box.setAttribute('position', position);
       box.setAttribute('color', '#4CC3D9');
       box.setAttribute('log', `message: I\'m a book! my title is ${product.title}`);
+      box.setAttribute('rotation', '-15 0 0');
+      xPos += 0.5;
+      
+      const text = document.createElement('a-text');
+      text.setAttribute('value', `${product.title}`);
+      text.setAttribute('align', 'center');
+      text.setAttribute('width', 1);
+      text.setAttribute('position', '0 -0.3 0.1');
+      box.appendChild(text);
+
       console.log('adding box...', box);
       scene.appendChild(box);;
     })
@@ -45,9 +60,8 @@ AFRAME.registerComponent(
       console.log('populating products...');
       products
         .then(({data}) => {
-          const products = shopifyUtils.getShopifyProductData(data);
-          console.log('products', products);
-          aframeUtils.generateProducts(products);
+          const productData = shopifyUtils.getShopifyProductData(data);
+          aframeUtils.generateProducts(productData);
         })
         .catch(e => console.log(e))
     }
