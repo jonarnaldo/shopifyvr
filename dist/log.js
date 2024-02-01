@@ -6,7 +6,6 @@ AFRAME.registerComponent(
       },
       update: function () {
         let el = this.el;
-        console.log('heheheheheheh')
         let data = this.data;
         this.log = function () {
           alert(data.message);  
