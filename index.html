@@ -36,7 +36,7 @@
           super-hands 
           hand-controls="hand: left" 
           blink-controls="collisionEntities: #cylinder, #ground"
-          
+          position-tracker
         ></a-entity>
         <a-entity
           mixin="grab-move"
@@ -44,7 +44,6 @@
           hand-controls="hand: right"
           blink-controls="collisionEntities: #cylinder, #ground" 
           raycaster="objects: #shelf; showLine:true;"
-          position-tracker
         ></a-entity>
       </a-entity>
       
