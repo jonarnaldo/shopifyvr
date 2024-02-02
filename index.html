@@ -10,6 +10,8 @@
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.misc.min.js"></script>
     <script src="log.js"></script>
     <script src="components/products.js"></script>
+    <script src="components/positionTracker.js"></script>
+    <script src="components/raycasterListen.js"></script>
   </head>
   <body>
     <a-scene physics="gravity: -3">
@@ -34,20 +36,23 @@
           super-hands 
           hand-controls="hand: left" 
           blink-controls="collisionEntities: #cylinder, #ground"
+          
         ></a-entity>
-        <a-entity 
+        <a-entity
           mixin="grab-move"
           super-hands
           hand-controls="hand: right"
-          blink-controls="collisionEntities: #cylinder, #ground"
+          blink-controls="collisionEntities: #cylinder, #ground" 
+          raycaster="objects: #shelf; showLine:true;"
+          position-tracker
         ></a-entity>
       </a-entity>
       
       <!-- scene -->
       <a-sky src="https://upload.wikimedia.org/wikipedia/commons/7/7d/Rainbow_on_the_Azores_%E2%80%93_360%C2%B0_drone_shot.jpg"></a-sky>
-      <a-box dynamic-body grabbable color="blue" position="-2 2 -3"></a-box>
-      <a-box id="shelf" dynamic-body grabbable position="1 1.75 -3" color="tomato" depth="0.1" height="1.5" width="1.5" ></a-box>
-      <a-plane id="ground" static-body position="0 0 0" rotation="-90 0 0" width="10" height="10" color="#7BC8A4" products></a-plane>
+      <a-box dynamic-body grabbable grab-collision color="blue" position="-2 2 -3"></a-box>
+      <a-box id="shelf" position="1 1 -3" color="tomato" depth="0.1" height="1.5" width="1.5" raycaster-listen></a-box>
+      <a-plane id="ground" static-body position="0 0 0" rotation="-90 0 0" width="100" height="100" color="#7BC8A4" products></a-plane>
     </a-scene>
   </body>
 </html>
