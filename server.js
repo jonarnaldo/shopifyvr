@@ -28,11 +28,14 @@ app.post('/products', async (req, res) => {
 
   const graphqlQuery = JSON.stringify({
     query: `{
-      products(first: 3) {
+      products(first: 5) {
         edges {
           node {
             id
             title
+            featuredImage {
+              url
+            }
           }
         }
       }
@@ -50,6 +53,7 @@ app.post('/products', async (req, res) => {
 })
 
 const httpsServer = https.createServer(credentials, app);
+
 httpsServer.listen(port, '0.0.0.0', function() {
-  console.log("server started on port " + port);
+  console.log("HTTPS server started on port " + port);
 });

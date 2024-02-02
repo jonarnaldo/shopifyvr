@@ -36,32 +36,37 @@ const shopifyUtils = {
 }
 
 const aframeUtils = {
+  feetToMeters: function(feet) {
+    return feet/3.28084;
+  },
+
   generateProducts: function(productData) {
     console.log('adding box...')
+    const feetToMeters = aframeUtils.feetToMeters;
     
     let xPos = 0;
     productData.forEach((product, index) => {
       const scene = document.querySelector('#shelf');
       const box = document.createElement("a-box");
-      const position = `${xPos - 1} 1 0.15`;
+      const position = `${xPos - feetToMeters(1.5)}  ${feetToMeters(1)} ${feetToMeters(0.3)}`;
       box.setAttribute('id', 'test');
-      box.setAttribute('height', 0.5);
-      box.setAttribute('width', 0.3);
-      box.setAttribute('depth', 0.05);
+      box.setAttribute('height', feetToMeters(0.75));
+      box.setAttribute('width', feetToMeters(0.5));
+      box.setAttribute('depth', feetToMeters(0.05));
       box.setAttribute('position', position);
-      box.setAttribute('color', '#4CC3D9');
+      box.setAttribute('src', `${product.featuredImage.url}`);
       box.setAttribute('log', `message: I\'m a book! my title is ${product.title}`);
       box.setAttribute('rotation', '-15 0 0');
-      xPos += 0.5;
+      xPos += feetToMeters(0.7);
       
       const text = document.createElement('a-text');
       text.setAttribute('value', `${product.title}`);
       text.setAttribute('align', 'center');
-      text.setAttribute('width', 1);
-      text.setAttribute('position', '0 -0.3 0.1');
+      text.setAttribute('color', 'black');
+      text.setAttribute('width', feetToMeters(1.2));
+      text.setAttribute('position', `0 ${feetToMeters(0.1)} ${feetToMeters(0.05)}`);
       box.appendChild(text);
 
-      console.log('adding box...', box);
       scene.appendChild(box);;
     })
   }
