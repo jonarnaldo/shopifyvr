@@ -1,32 +1,53 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-blink-controls/dist/aframe-blink-controls.min.js"></script>
+    <script src="https://unpkg.com/super-hands@^3.0.3/dist/super-hands.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.1.0/dist/aframe-physics-system.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@^4.1.1/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.misc.min.js"></script>
     <script src="log.js"></script>
     <script src="components/products.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/aframe-blink-controls/dist/aframe-blink-controls.min.js"></script>
   </head>
   <body>
-    <a-scene>
+    <a-scene physics="gravity: -3">
     <!-- preloaded assets -->
       <a-assets>
-        <a-asset-item id="cube" src="https://cdn.glitch.global/347e8c8b-fb12-4d79-b2f5-36c54c20587f/cube_test.glb?v=1706739194383"></a-asset-item>
-        <img id="boxTexture" src="https://i.imgur.com/mYmmbrp.jpg">
+        <a-mixin id="grab-move"
+          static-body="shape: sphere; sphereRadius: 0.02;"
+          sphere-collider="objects: a-box"
+        ></a-mixin>
       </a-assets>
+      
       <!-- camera rig -->
       <a-entity id="player">
         <!-- camera -->
         <a-entity id="camera" camera position="1 1 0" look-controls wasd-controls>
           <a-cursor id="cursor" fuse="true" fusetimeout="3000"></a-cursor>
         </a-entity>
+        
         <!-- hand controls -->
-        <a-entity id="left-hand" oculus-touch-controls="hand: left" blink-controls="collisionEntities: #cylinder, #ground"></a-entity>
-        <a-entity id="right-hand" oculus-touch-controls="hand: right" blink-controls="collisionEntities: #cylinder, #ground"></a-entity>
+        <a-entity 
+          mixin="grab-move"
+          super-hands 
+          hand-controls="hand: left" 
+          blink-controls="collisionEntities: #cylinder, #ground"
+        ></a-entity>
+        <a-entity 
+          mixin="grab-move"
+          super-hands
+          hand-controls="hand: right"
+          blink-controls="collisionEntities: #cylinder, #ground"
+        ></a-entity>
       </a-entity>
+      
       <!-- scene -->
       <a-sky src="https://upload.wikimedia.org/wikipedia/commons/7/7d/Rainbow_on_the_Azores_%E2%80%93_360%C2%B0_drone_shot.jpg"></a-sky>
-      <a-box id="shelf" position="1 0.75 -3" color="tomato" depth="0.1" height="1.5" width="1.5"></a-box>
-      <a-plane id="ground" position="0 0 0" rotation="-90 0 0" width="10" height="10" color="#7BC8A4" products></a-plane>
+      <a-box dynamic-body grabbable color="blue" position="-2 2 -3"></a-box>
+      <a-box id="shelf" dynamic-body grabbable position="1 1.75 -3" color="tomato" depth="0.1" height="1.5" width="1.5" ></a-box>
+      <a-plane id="ground" static-body position="0 0 0" rotation="-90 0 0" width="10" height="10" color="#7BC8A4" products></a-plane>
     </a-scene>
   </body>
 </html>
