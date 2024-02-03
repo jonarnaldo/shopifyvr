@@ -42,32 +42,45 @@ const aframeUtils = {
 
   generateProducts: function(productData) {
     const feetToMeters = aframeUtils.feetToMeters;   
-    let xPos = 0;
-    productData.forEach((product, index) => {
-      const scene = document.querySelector('#shelf');
+    let pos = 0;
+    const scene = document.querySelector('a-scene');
+    const shelf = document.createElement('a-entity');
+    
+    shelf.setAttribute("gltf-model", "#bookshelf-empty")
+    shelf.setAttribute("scale", "1 1 1" )
+    shelf.setAttribute("position", "0 0 -1")
+    shelf.setAttribute("static-body", "")
+    
+    productData.forEach((product, index) => {        
       const box = document.createElement("a-box");
-      const position = `${xPos - feetToMeters(1.5)}  ${feetToMeters(1)} ${feetToMeters(0.3)}`;
+      const position = `${pos - feetToMeters(2.2)}  ${feetToMeters(1)} ${feetToMeters(0.3)}`;
+      
       box.setAttribute('id', 'test');
       box.setAttribute('height', feetToMeters(0.75));
       box.setAttribute('width', feetToMeters(0.5));
       box.setAttribute('depth', feetToMeters(0.05));
-      box.setAttribute('position', position);
+      box.setAttribute('position', `1.9 1.2 ${position}`); // this is relative to the parent(shelf)
       box.setAttribute('src', `${product.featuredImage.url}`);
-      box.setAttribute('rotation', '-15 0 0');
+      box.setAttribute('rotation', `0 -90 0`);
       box.setAttribute('grabbable', '');
       box.setAttribute('book', `title: I\'m a book! my title is ${product.title}`);
-      xPos += feetToMeters(0.7);
+      pos += feetToMeters(0.65);
       
+      // add book title
       const text = document.createElement('a-text');
       text.setAttribute('value', `${product.title}`);
       text.setAttribute('align', 'center');
       text.setAttribute('color', 'black');
       text.setAttribute('width', feetToMeters(1.2));
       text.setAttribute('position', `0 ${feetToMeters(0.1)} ${feetToMeters(0.05)}`);
-      box.appendChild(text);
 
-      scene.appendChild(box);;
-    })
+      // add book to shelf
+      box.appendChild(text);
+      shelf.appendChild(box);;
+    });
+
+    // add shelf to scene
+    scene.appendChild(shelf);
   }
 }
 
