@@ -40,44 +40,59 @@ const aframeUtils = {
     return feet/3.28084;
   },
 
+  setAttributes: function(el, attributes) {
+    for (key in attributes) {
+      el.setAttribute(key, attributes[key]);
+    }
+  },
+
   generateProducts: function(productData) {
     const feetToMeters = aframeUtils.feetToMeters;   
     let pos = 0;
     const scene = document.querySelector('a-scene');
     const shelf = document.createElement('a-entity');
     
-    shelf.setAttribute("gltf-model", "#bookshelf-empty")
-    shelf.setAttribute("scale", "1 1 1" )
-    shelf.setAttribute("position", "0 0 -1")
-    shelf.setAttribute("static-body", "")
+    aframeUtils.setAttributes(shelf, {
+      "gltf-model": "#bookshelf-empty",
+      "scale": "1 1 1" ,
+      "position": "0 0 -1",
+      "static-body": "",
+      "animation": "property: position; from: 0 20 -1; to: 0 0 -1; dur: 100; easing: easeInOutCirc; loop: false",
+    });
     
     productData.forEach((product, index) => {        
       const box = document.createElement("a-box");
       const position = `${pos - feetToMeters(2.2)}  ${feetToMeters(1)} ${feetToMeters(0.3)}`;
       
-      box.setAttribute('id', 'test');
-      box.setAttribute('height', feetToMeters(0.75));
-      box.setAttribute('width', feetToMeters(0.5));
-      box.setAttribute('depth', feetToMeters(0.05));
-      box.setAttribute('position', `1.9 1.2 ${position}`); // this is relative to the parent(shelf)
-      box.setAttribute('src', `${product.featuredImage.url}`);
-      box.setAttribute('rotation', `0 -90 0`);
-      box.setAttribute('grabbable', '');
-      box.setAttribute('hoverable', '');
-      box.setAttribute('log-entity', '');
-      box.setAttribute('book', `title: I\'m a book! my title is ${product.title}`);
+      aframeUtils.setAttributes(box, {
+        'id': 'test',
+        'height': feetToMeters(0.75),
+        'width': feetToMeters(0.5),
+        'depth': feetToMeters(0.05),
+        'position': `1.9 1.2 ${position}`, // this is relative to the parent(shelf)
+        'src': `${product.featuredImage.url}`,
+        'rotation': `0 -90 0`,
+        'grabbable': '',
+        'hoverable': '',
+        'log-entity': '',
+        'book': `title: I\'m a book! my title is ${product.title}`,
+      });
+
       pos += feetToMeters(0.65);
       
       // add book title
       const text = document.createElement('a-text');
-      text.setAttribute('value', `${product.title}`);
-      text.setAttribute('align', 'center');
-      text.setAttribute('color', 'black');
-      text.setAttribute('width', feetToMeters(1.2));
-      text.setAttribute('position', `0 ${feetToMeters(0.1)} ${feetToMeters(0.05)}`);
+      aframeUtils.setAttributes(text, {
+        'value': `${product.title}`,
+        'align': 'center',
+        'color': 'black',
+        'width': feetToMeters(1.2),
+        'position': `0 ${feetToMeters(0.1)} ${feetToMeters(0.05)}`,
+      });
 
-      // add book to shelf
+      // add text to book
       box.appendChild(text);
+      // add book to shelf
       shelf.appendChild(box);;
     });
 
