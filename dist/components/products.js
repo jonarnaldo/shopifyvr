@@ -53,11 +53,12 @@ const aframeUtils = {
     const shelf = document.createElement('a-entity');
     
     aframeUtils.setAttributes(shelf, {
+      "id": "interactive-shelf",
+      "visible": "false",
       "gltf-model": "#bookshelf-empty",
       "scale": "1 1 1" ,
       "position": "0 0 -1",
       "static-body": "",
-      "animation": "property: position; from: 0 20 -1; to: 0 0 -1; dur: 100; easing: easeInOutCirc; loop: false",
     });
     
     productData.forEach((product, index) => {        
