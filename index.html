@@ -17,6 +17,12 @@
     <a-scene physics="gravity: -3">
     <!-- preloaded assets -->
       <a-assets>
+        <!-- static -->
+        <a-asset-item id="store" src="assets/store.glb"></a-asset-item>
+        <a-asset-item id="static-interior" src="assets/static_interior.glb"></a-asset-item>
+        <a-asset-item id="store-floor" src="assets/store_floor.glb"></a-asset-item>
+        
+        <!-- mixins -->
         <a-mixin id="grab-move"
           static-body="shape: sphere; sphereRadius: 0.02;"
           sphere-collider="objects: a-box"
@@ -26,7 +32,7 @@
       <!-- camera rig -->
       <a-entity id="player">
         <!-- camera -->
-        <a-entity id="camera" camera position="1 1 0" look-controls wasd-controls>
+        <a-entity id="camera" camera position="1 2 0" look-controls wasd-controls>
           <a-cursor id="cursor" fuse="true" fusetimeout="3000"></a-cursor>
         </a-entity>
         
@@ -49,8 +55,10 @@
       
       <!-- scene -->
       <a-sky src="https://upload.wikimedia.org/wikipedia/commons/7/7d/Rainbow_on_the_Azores_%E2%80%93_360%C2%B0_drone_shot.jpg"></a-sky>
-      <a-box dynamic-body grabbable grab-collision color="blue" position="-2 2 -3"></a-box>
       <a-box id="shelf" position="1 1 -3" color="tomato" depth="0.1" height="1.5" width="1.5" raycaster-listen></a-box>
+      <a-entity gltf-model="#store" scale="1 1 1" position="0 0 -1"></a-entity>
+      <a-entity gltf-model="#store-floor" static-body scale="1 1 1" position="0 0 -1"></a-entity>
+      <a-entity gltf-model="#static-interior" static-body scale="1 1 1" position="0 0 -1"></a-entity>
       <a-plane id="ground" static-body position="0 0 0" rotation="-90 0 0" width="100" height="100" color="#7BC8A4" products></a-plane>
     </a-scene>
   </body>

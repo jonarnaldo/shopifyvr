@@ -41,9 +41,7 @@ const aframeUtils = {
   },
 
   generateProducts: function(productData) {
-    console.log('adding box...')
-    const feetToMeters = aframeUtils.feetToMeters;
-    
+    const feetToMeters = aframeUtils.feetToMeters;   
     let xPos = 0;
     productData.forEach((product, index) => {
       const scene = document.querySelector('#shelf');
@@ -55,8 +53,9 @@ const aframeUtils = {
       box.setAttribute('depth', feetToMeters(0.05));
       box.setAttribute('position', position);
       box.setAttribute('src', `${product.featuredImage.url}`);
-      box.setAttribute('log', `message: I\'m a book! my title is ${product.title}`);
       box.setAttribute('rotation', '-15 0 0');
+      box.setAttribute('grabbable', '');
+      box.setAttribute('book', `title: I\'m a book! my title is ${product.title}`);
       xPos += feetToMeters(0.7);
       
       const text = document.createElement('a-text');
@@ -97,14 +96,18 @@ AFRAME.registerComponent(
     update: function () {
       let el = this.el;
       let data = this.data;
-      this.log = function () {
-        alert(data.message);  
-      }
-      el.addEventListener('click', this.log);
+      el.addEventListener('grab-start', function () {
+        console.log('hey')
+        el.setAttribute('collision-filter', {collisionForces: false })
+      })
+      el.addEventListener('grab-end', function () {
+        console.log('yo')
+        el.setAttribute('dynamic-body', '');
+        el.setAttribute('collision-filter', {collisionForces: true})
+      })
     },
     remove: function () {
       let el = this.el;
-      el.remveEventListener('click', this.log);
     }
   }
 )
