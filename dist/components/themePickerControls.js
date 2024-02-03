@@ -5,9 +5,9 @@ AFRAME.registerComponent('theme-picker-controls', {
 			console.log('hovered');
 			
 			el.setAttribute(
-				"animation", "property: position; from: 8 0.5 -4; to: 8 0 -4; dur: 800; easing: easeInOutElastic",
+				"animation", "property: position; from: 3 0.5 -4; to: 3 0 -4; dur: 800; easing: easeInOutElastic",
 			);
-			
+					
 			document.getElementById('store-floor').setAttribute("visible", "true");
 			document.getElementById('store-interior').setAttribute("visible", "true");
 			document.getElementById('store-model').setAttribute("visible", "true");
