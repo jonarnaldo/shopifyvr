@@ -8,7 +8,7 @@
     <script src="https://unpkg.com/aframe-event-set-component@^4.1.1/dist/aframe-event-set-component.min.js"></script>
     <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.misc.min.js"></script>
-    <script src="log.js"></script>
+    <script src="components/logEntity.js"></script>
     <script src="components/products.js"></script>
     <script src="components/positionTracker.js"></script>
     <script src="components/raycasterListen.js"></script>
@@ -50,17 +50,11 @@
           hand-controls="hand: right"
           blink-controls="collisionEntities: #cylinder, #ground" 
         ></a-entity>
-        <!-- <a-entity
-          mixin="grab-move"
-          super-hands
-          hand-controls="hand: right"
-          blink-controls="collisionEntities: #cylinder, #ground" 
-          raycaster="objects: #shelf; showLine:true;"
-        ></a-entity> -->
       </a-entity>
       
       <!-- scene -->
       <a-sky src="https://upload.wikimedia.org/wikipedia/commons/7/7d/Rainbow_on_the_Azores_%E2%80%93_360%C2%B0_drone_shot.jpg"></a-sky>
+      <a-box log-entity hoverable grabbable stretchable draggable droppable color="blue" position="0 0 -2"></a-box>
       <a-entity gltf-model="#store" scale="1 1 1" position="0 0 -1"></a-entity>
       <a-entity gltf-model="#store-floor" static-body scale="1 1 1" position="0 0 -1"></a-entity>
       <a-entity gltf-model="#static-interior" static-body scale="1 1 1" position="0 0 -1"></a-entity>

@@ -63,6 +63,8 @@ const aframeUtils = {
       box.setAttribute('src', `${product.featuredImage.url}`);
       box.setAttribute('rotation', `0 -90 0`);
       box.setAttribute('grabbable', '');
+      box.setAttribute('hoverable', '');
+      box.setAttribute('log-entity', '');
       box.setAttribute('book', `title: I\'m a book! my title is ${product.title}`);
       pos += feetToMeters(0.65);
       
