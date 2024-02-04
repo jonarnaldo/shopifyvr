@@ -29,7 +29,7 @@ app.post('/products', async (req, res) => {
 
   const graphqlQuery = JSON.stringify({
     query: `{
-      products(first: 5) {
+      products(first: 30) {
         edges {
           node {
             id

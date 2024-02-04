@@ -48,30 +48,35 @@ const aframeUtils = {
 
   generateProducts: function(productData) {
     const feetToMeters = aframeUtils.feetToMeters;   
-    let pos = 0;
+    let xPos = 0;
+    let yPos = 2.1;
     const scene = document.querySelector('a-scene');
     const shelf = document.createElement('a-entity');
     
     aframeUtils.setAttributes(shelf, {
       "id": "interactive-shelf",
-      "visible": "false",
+      "visible": "true",
       "gltf-model": "#bookshelf-empty",
       "scale": "1 1 1" ,
       "position": "0 0 -1",
+      // "rotation": "0 -180 0",
       "static-body": "",
     });
     
     productData.forEach((product, index) => {        
       const box = document.createElement("a-box");
-      const position = `${pos - feetToMeters(2.2)}  ${feetToMeters(1)} ${feetToMeters(0.3)}`;
+      console.log((index + 1) % 5 === 0, index, yPos);
+      if ((index) % 5 === 0) {
+        yPos = yPos - 0.3;
+        xPos = 0;
+      }
       
       aframeUtils.setAttributes(box, {
         'id': 'test',
         'height': feetToMeters(0.75),
         'width': feetToMeters(0.5),
         'depth': feetToMeters(0.05),
-        'position': `1.9 1.2 ${position}`, // this is relative to the parent(shelf)
-        'src': `${product.featuredImage.url}`,
+        'position': `1.9 ${yPos} ${xPos - feetToMeters(2.2)}`, // this is relative to the parent(shelf)
         'rotation': `0 -90 0`,
         'grabbable': '',
         'hoverable': '',
@@ -79,7 +84,11 @@ const aframeUtils = {
         'book': `title: I\'m a book! my title is ${product.title}`,
       });
 
-      pos += feetToMeters(0.65);
+      if (product.featuredImage && product.featuredImage.url) {
+        box.setAttribute('src', product.featuredImage.url)
+      }
+
+      xPos += feetToMeters(0.65);
       
       // add book title
       const text = document.createElement('a-text');
