@@ -36,7 +36,7 @@ const shopifyUtils = {
 
   getAllProducts: async function() {
     try {
-      const localhost = '192.168.68.55';
+      const localhost = '192.168.68.63';
       const response = await fetch(`https://${localhost}:8080/products`, {
         method: "POST",
         mode: "cors",
@@ -123,7 +123,7 @@ const aframeUtils = {
         'grabbable': '',
         'hoverable': '',
         'log-entity': '',
-        'book': `title: I\'m a book! my title is ${product.title}`,
+        'book': `title: I\'m a book! my title is ${product.title}; id: ${index}`,
       });
 
       if (product.featuredImage && product.featuredImage.url) {
@@ -145,18 +145,20 @@ const aframeUtils = {
       // add info display
       const infoDisplay = document.createElement('a-box');
       aframeUtils.setAttributes(infoDisplay, {
+        id: `info-display-${index}`,
+        visible: 'false',
         position: `0 ${feetToMeters(0.8)} 0`,
-        'height': feetToMeters(0.3),
-        'width': feetToMeters(0.5),
-        'depth': feetToMeters(0.01),
-        'material': "opacity: 0.5; transparent: true"
+        height: feetToMeters(0.3),
+        width: feetToMeters(0.5),
+        depth: feetToMeters(0.01),
+        material: "opacity: 0.5; transparent: true"
       });
 
       const displayImage = document.createElement('a-image');
       aframeUtils.setAttributes(displayImage, {
         src: product.featuredImage.url,
-        height: feetToMeters(0.25),
-        width: feetToMeters(0.375)
+        height: feetToMeters(0.04),
+        width: feetToMeters(0.06)
       })
 
       const displayText = document.createElement('a-text');
@@ -208,19 +210,36 @@ AFRAME.registerComponent(
   'book',
   {
     schema: {
-      title: {type: 'string', default: 'title'}
+      title: {type: 'string', default: 'title'},
+      id: {type: 'number', default: ''}
     },
     update: function () {
       let el = this.el;
       let data = this.data;
-      el.addEventListener('grab-start', function () {
-        console.log('hey')
+      el.addEventListener('hover-start', function () {
+        console.log('hover start')
         el.setAttribute('collision-filter', {collisionForces: false })
       })
-      el.addEventListener('grab-end', function () {
-        console.log('yo')
+
+      el.addEventListener('grab-start', function () {
+        console.log('grab start')
+
+        const infoDisplayEntity = document.querySelector(`#info-display-${data.id}`);
+        infoDisplayEntity.setAttribute('visible', 'true');
+        // todo: add some snazzy animation here
+      })
+
+      el.addEventListener('hover-end', function () {
+        console.log('hover end')
         el.setAttribute('dynamic-body', '');
         el.setAttribute('collision-filter', {collisionForces: true})
+      })
+
+      el.addEventListener('grab-end', function () {
+        console.log('grab end')
+        const infoDisplayEntity = document.querySelector(`#info-display-${data.id}`);
+        console.log(infoDisplayEntity)
+        infoDisplayEntity.setAttribute('visible', 'true');
       })
     },
     remove: function () {
