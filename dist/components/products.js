@@ -156,7 +156,7 @@ const aframeUtils = {
 
       const displayImage = document.createElement('a-image');
       aframeUtils.setAttributes(displayImage, {
-        src: product.featuredImage.url,
+        src: product?.featuredImage?.url ? product.featuredImage.url : null,
         height: feetToMeters(0.04),
         width: feetToMeters(0.06)
       })
@@ -191,8 +191,8 @@ AFRAME.registerComponent(
   'products',
   {
     init: function() {
-      // const products = shopifyUtils.getAllProducts();      
-      const products = dummyProducts;
+      const products = shopifyUtils.getAllProducts();      
+      // const products = dummyProducts;
 
       console.log('populating products...');
       products
@@ -218,7 +218,6 @@ AFRAME.registerComponent(
       let data = this.data;
       el.addEventListener('hover-start', function () {
         console.log('hover start')
-        el.setAttribute('collision-filter', {collisionForces: false })
       })
 
       el.addEventListener('grab-start', function () {
@@ -226,13 +225,12 @@ AFRAME.registerComponent(
 
         const infoDisplayEntity = document.querySelector(`#info-display-${data.id}`);
         infoDisplayEntity.setAttribute('visible', 'true');
+        el.setAttribute('collision-filter', {collisionForces: false })
         // todo: add some snazzy animation here
       })
 
       el.addEventListener('hover-end', function () {
         console.log('hover end')
-        el.setAttribute('dynamic-body', '');
-        el.setAttribute('collision-filter', {collisionForces: true})
       })
 
       el.addEventListener('grab-end', function () {
@@ -240,6 +238,8 @@ AFRAME.registerComponent(
         const infoDisplayEntity = document.querySelector(`#info-display-${data.id}`);
         console.log(infoDisplayEntity)
         infoDisplayEntity.setAttribute('visible', 'true');
+        el.setAttribute('dynamic-body', '');
+        el.setAttribute('collision-filter', {collisionForces: true})
       })
     },
     remove: function () {
