@@ -37,6 +37,14 @@ app.post('/products', async (req, res) => {
             featuredImage {
               url
             }
+            variants(first: 1) {
+              nodes {
+                price {
+                  amount
+                  currencyCode
+                }
+              }
+            }
           }
         }
       }
@@ -49,7 +57,7 @@ app.post('/products', async (req, res) => {
     headers: headers,
     data: graphqlQuery
   });
-
+  
   res.send(response.data);
 })
 

@@ -1,7 +1,42 @@
+// ex. data.products.edges[0].node.featuredImage.url
+const dummyProducts = new Promise((res, rej) => {
+  return res({
+    data: {
+      products: {
+        edges: [
+          { 
+            node: {
+              featuredImage: {url: 'https://cdn.shopify.com/s/files/1/0550/9165/8808/products/putting-on-your-shoes_925x_f71c19ac-c091-4c7f-bbfe-a43d6a0456b7.jpg?v=1619565238'},
+              id: 'gid://shopify/Product/6581516075064',
+              title: 'LED High Tops',
+              description: 'the most high tech high tops ever made. it\'s like walking into the future',
+              variants: {
+                nodes: [
+                  {
+                    price: {
+                      amount: "90.00",
+                      currencyCode: "CAD"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  })
+});
+
 const shopifyUtils = {
+  currency: {
+    'CAD': '$',
+    'USD': '$'
+  },
+
   getAllProducts: async function() {
     try {
-      const localhost = 'your local ip here';
+      const localhost = '192.168.68.55';
       const response = await fetch(`https://${localhost}:8080/products`, {
         method: "POST",
         mode: "cors",
@@ -21,6 +56,7 @@ const shopifyUtils = {
           "Content-Type": "application/json",
         },
       })
+
       return response.json();
     }
   },
@@ -31,6 +67,13 @@ const shopifyUtils = {
       return data.products.edges.map(({node}) => {
         return node;
       })
+    }
+  },
+
+  getProductPrice(product) {
+    if (product.variants?.nodes.length) {
+      const price = product.variants.nodes[0].price;
+      return `${shopifyUtils.currency[price.currencyCode]}${price.amount}`;
     }
   }
 }
@@ -59,13 +102,12 @@ const aframeUtils = {
       "gltf-model": "#bookshelf-empty",
       "scale": "1 1 1" ,
       "position": "0 0 -1",
-      // "rotation": "0 -180 0",
+      "rotation": "0 -180 0",
       "static-body": "",
     });
     
     productData.forEach((product, index) => {        
       const box = document.createElement("a-box");
-      console.log((index + 1) % 5 === 0, index, yPos);
       if ((index) % 5 === 0) {
         yPos = yPos - 0.3;
         xPos = 0;
@@ -100,13 +142,45 @@ const aframeUtils = {
         'position': `0 ${feetToMeters(0.1)} ${feetToMeters(0.05)}`,
       });
 
-      // add text to book
+      // add info display
+      const infoDisplay = document.createElement('a-box');
+      aframeUtils.setAttributes(infoDisplay, {
+        position: `0 ${feetToMeters(0.8)} 0`,
+        'height': feetToMeters(0.3),
+        'width': feetToMeters(0.5),
+        'depth': feetToMeters(0.01),
+        'material': "opacity: 0.5; transparent: true"
+      });
+
+      const displayImage = document.createElement('a-image');
+      aframeUtils.setAttributes(displayImage, {
+        src: product.featuredImage.url,
+        height: feetToMeters(0.25),
+        width: feetToMeters(0.375)
+      })
+
+      const displayText = document.createElement('a-text');
+      let copy = `${product.title} \n ${shopifyUtils.getProductPrice(product)}`
+      if (product.description) {
+        copy += `\n \n ${product.description}`;
+      }
+
+      aframeUtils.setAttributes(displayText, {
+        'value': copy,
+        'align': 'center',
+        'color': 'black',
+        'width': feetToMeters(0.5),
+        'position': `0 ${feetToMeters(-0.01)} ${feetToMeters(0.05)}`,
+      });
+
+      infoDisplay.appendChild(displayImage);
+      infoDisplay.appendChild(displayText);
+
       box.appendChild(text);
-      // add book to shelf
+      box.appendChild(infoDisplay);
       shelf.appendChild(box);;
     });
 
-    // add shelf to scene
     scene.appendChild(shelf);
   }
 }
@@ -115,10 +189,13 @@ AFRAME.registerComponent(
   'products',
   {
     init: function() {
-      const products = shopifyUtils.getAllProducts();
+      // const products = shopifyUtils.getAllProducts();      
+      const products = dummyProducts;
+
       console.log('populating products...');
       products
         .then(({data}) => {
+          console.log(data, 'data')
           const productData = shopifyUtils.getShopifyProductData(data);
           aframeUtils.generateProducts(productData);
         })
