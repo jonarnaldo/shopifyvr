@@ -1,5 +1,5 @@
 ## Description
-This is an experimental project to create a virtual storefront for your shopify store
+This is an experimental project to create a virtual storefront for your shopify store built using A-frame.
 
 ## Before Getting started
 You will need to create an SSL certificate if you want to test on an actual VR headset since A-frame requires HTTPS protocol for local access. Follow tutorial [here](https://adamtheautomator.com/https-nodejs/)
