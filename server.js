@@ -19,7 +19,9 @@ app.get('*', function (request, response) {
 
 
 app.post('/products', async (req, res) => {
-  const url = "https://hop-page.myshopify.com/api/2024-01/graphql.json";
+  // graphql url
+  // ex. https://hop-page.myshopify.com/api/2024-01/graphql.json
+  const url = "https://some_shop.myshopify.com/api/2024-01/graphql.json";
   const accessToken = process.env.ACCESS_TOKEN;
   
   const headers = {
